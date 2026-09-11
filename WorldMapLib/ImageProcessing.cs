@@ -21,18 +21,16 @@ namespace WorldMapLib
             return await LocalChatClient.CreateAsync(options);
         }
 
-        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(string imagePath)
+        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(byte[] jpegBytes)
         {
             using var chatClient = await GetModel();
 
-            byte[] imageBytes = await File.ReadAllBytesAsync(imagePath);
-
             var jsonSchemaOptions = new ChatResponseFormatJson(
-                AIJsonUtilities.CreateJsonSchema(
-                    type: typeof(List<WorldObject>),
-                    description: "A structured list of world objects."
-                )
-            );
+               AIJsonUtilities.CreateJsonSchema(
+                   type: typeof(List<WorldObject>),
+                   description: "A structured list of world objects."
+               )
+           );
             var options = new ChatOptions
             {
                 ResponseFormat = jsonSchemaOptions
@@ -42,12 +40,21 @@ namespace WorldMapLib
             {
                 new ChatMessage (ChatRole.System, [
                     new TextContent(ImageDescriptionPrompt),
-                    new DataContent(imageBytes, "image/jpeg")
+                    new DataContent(jpegBytes, "image/jpeg")
                 ])
             };
 
             ChatResponse response = await chatClient.GetResponseAsync(messages, options);
+
+            Console.WriteLine($"Objects found in image: {response}");
+
             return JsonSerializer.Deserialize<List<WorldObject>>(response.Text) ?? new List<WorldObject>();
+        }
+
+        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(string jpegImagePath)
+        {
+            byte[] jpegBytes = await File.ReadAllBytesAsync(jpegImagePath);
+            return await GetObjectsFromImageAsync (jpegBytes);
         }
 
 

@@ -1,4 +1,3 @@
-
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Kjarni;
@@ -149,7 +148,11 @@ public class Area
 
     public void ConglomerateImage(string jpegPath)
     {
-        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(jpegPath).Wait());
+        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(jpegPath).GetAwaiter().GetResult());
+    }
+    public void ConglomerateImage(byte[] jpegData)
+    {
+        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(jpegData).GetAwaiter().GetResult());
     }
 
     /// <summary>

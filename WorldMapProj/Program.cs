@@ -1,114 +1,61 @@
-﻿using System.Text.Json;
+﻿using SeeShark;
+using SeeShark.Decode;
+using SeeShark.Device;
+using SeeShark.FFmpeg;
+using System.IO;
+using System.Text.Json;
 using WorldMapLib;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+
 
 internal class Program
 {
+
+    static bool isProcessing = false;
+    static int framesSinceTaken = 0;
+    static int frameCount = 0;
+
+    static WorldGraph graph;
+
     public static void Main()
     {
-        WorldGraph graph = new();
+        graph = new();
 
+        using var manager = new CameraManager();
+        using var camera = manager.GetDevice();
+        camera.OnFrame += frameEventHandler;
 
-        //graph.GetBaseArea().AddObjectsUnsafe(new List<WorldObject>
-        //{
-        //    new WorldObject("mreeeow", "a cat likely", Volatility.High, new GpsCoord(0, 0))
-        //});
+        camera.StartCapture();
 
-        graph.GetBaseArea().AddSubArea("kitchen", "a kitchen that contains many cooking utensils and similar", new GpsCoord(0,0), new List<WorldObject>
+        string objectsJson;
+        while ((objectsJson = Console.ReadLine()!) != "exit")
         {
-            new WorldObject("black cat", "mreooww", Volatility.High, new GpsCoord(0, 0))
-            , new WorldObject("black garbage can", "full of trash", Volatility.Low, new GpsCoord(0, 0))
-            , new WorldObject("Phone with black case", "Leather case on small phone", Volatility.High, new GpsCoord(0, 0))
-            , new WorldObject("Tissue box", "sunflower pattern on the outside", Volatility.Medium, new GpsCoord(0, 0))
-            , new WorldObject("Brown box of cables", "contains assorted cables", Volatility.Medium, new GpsCoord(0, 0))
-        });
 
-        string json = graph.SerializeToJsonString(true);
-        Console.WriteLine(json);
-
-
-        string objectPrompt = "Tissues";
-        while ((objectPrompt = Console.ReadLine()!) != "exit")
-        {
-            Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt)?.obj.ToString(true)}");
         }
 
+        camera.StopCapture();
 
-        WorldGraph rerun = new WorldGraph(json);
-        string rerunStr = rerun.SerializeToJsonString(true);
-        Console.WriteLine((rerunStr == json ? "Successful" : "Failed") + " round trip.");
+    }
 
-        rerun.GetBaseArea().TryAddObjects(
-            """
-                  [
-              {
-                "Name": "black cat",
-                "Description": "mreooww",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 2
-              },
-              {
-                "Name": "black garbage can",
-                "Description": "full of trash",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 0
-              },
-              {
-                "Name": "Phone with black case",
-                "Description": "Leather case on small phone",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 2
-              },
-              {
-                "Name": "Tissue box",
-                "Description": "sunflower pattern on the outside",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 1
-              },
-              {
-                "Name": "Brown box of cables",
-                "Description": "contains assorted cables",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 1
-              }
-            ]
-            """
-            );
-            rerun.GetBaseArea().TryAddObjects(
-            """
-                  [
-              {
-                "Name": "grey cat",
-                "Description": "mreooww",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 2
-              },
-              {
-                "Name": "trash bin",
-                "Description": "full of trash",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 0
-              },
-              {
-                "Name": "Phone",
-                "Description": "Leather case on small phone",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 2
-              },
-              {
-                "Name": "Tissues",
-                "Description": "sunflower pattern on the outside",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 1
-              },
-              {
-                "Name": "bunch of cables",
-                "Description": "contains assorted cables",
-                "ApproxCoordinates": {},
-                "ObjectVolatility": 1
-              }
-            ]
-            """
-            );
-        Console.WriteLine(rerun.SerializeToJsonString(true));
+    
+    private static void frameEventHandler(object? sender, FrameEventArgs e)
+    {
+        if (framesSinceTaken > 60 && !isProcessing)
+        {
+            int frameNum = frameCount;
+            if (e.Status != DecodeStatus.NewFrame)
+                return;
+
+            Frame frame = e.Frame;
+            
+            var image = Image.LoadPixelData<Bgr24>(frame.RawData, frame.Width, frame.Height);
+            using var jpegDataStream = new MemoryStream();
+            image.SaveAsJpeg(jpegDataStream);
+
+            graph.GetBaseArea().ConglomerateImage(jpegDataStream.ToArray());
+            Console.WriteLine($"Processed frame {frameNum}");
+        }
+        framesSinceTaken++;
     }
 }

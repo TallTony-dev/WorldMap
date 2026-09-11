@@ -10,6 +10,8 @@
     <PackageReference Include="ElBruno.LocalLLMs" Version="0.21.0" />
     <PackageReference Include="Kjarni" Version="0.2.0" />
     <PackageReference Include="Microsoft.Extensions.AI" Version="10.10.0" />
+    <PackageReference Include="SeeShark" Version="4.1.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="4.1.1" />
   </ItemGroup>
 
 </Project>
