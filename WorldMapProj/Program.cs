@@ -73,6 +73,42 @@ internal class Program
             ]
             """
             );
+            rerun.GetBaseArea().TryAddObjects(
+            """
+                  [
+              {
+                "Name": "grey cat",
+                "Description": "mreooww",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 2
+              },
+              {
+                "Name": "trash bin",
+                "Description": "full of trash",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 0
+              },
+              {
+                "Name": "Phone",
+                "Description": "Leather case on small phone",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 2
+              },
+              {
+                "Name": "Tissues",
+                "Description": "sunflower pattern on the outside",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 1
+              },
+              {
+                "Name": "bunch of cables",
+                "Description": "contains assorted cables",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 1
+              }
+            ]
+            """
+            );
         Console.WriteLine(rerun.SerializeToJsonString(true));
     }
 }
