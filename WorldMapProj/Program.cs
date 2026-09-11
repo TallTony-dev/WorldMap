@@ -29,7 +29,7 @@ internal class Program
         string objectPrompt = "Tissues";
         while ((objectPrompt = Console.ReadLine()!) != "exit")
         {
-            Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt).obj.ToString(true)}");
+            Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt)?.obj.ToString(true)}");
         }
 
 
