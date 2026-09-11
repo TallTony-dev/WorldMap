@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace WorldMapLib;
 
 /// <summary>
@@ -15,7 +17,7 @@ public class WorldObject
     public GpsCoord ApproxCoordinates { get; private set; } //might not need or want, could be unneeded context
     public Volatility ObjectVolatility { get; private set; }
 
-
+    [JsonConstructor]
     public WorldObject(string name, string description, Volatility objectVolatility, GpsCoord approxCoordinates)
     {
         Name = name;

@@ -1,4 +1,5 @@
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Kjarni;
 
@@ -38,7 +39,6 @@ public class Area
     [JsonInclude]
     private List<Area> SubAreas = new();
 
-
     private Area? _parent;
 
 
@@ -77,15 +77,16 @@ public class Area
 
     public void AddSubArea(string name, string description, GpsCoord approxCoords, List<WorldObject> Objects)
     {
-        SubAreas.Add(new Area(name, description, approxCoords, Objects));
-    }
-    public void AddSubArea(string name, string description, GpsCoord approxCoords)
-    {
         if (SubAreas.Any(t => t.Name == name))
         {
             Console.WriteLine("Warning: added subarea with duplicate name");
         }
-        SubAreas.Add(new Area(name, description, approxCoords));
+        Area a = new Area(name, description, approxCoords, Objects) { _parent = this };
+        SubAreas.Add(a);
+    }
+    public void AddSubArea(string name, string description, GpsCoord approxCoords)
+    {
+        AddSubArea(name, description, approxCoords, new());
     }
 
     internal string GetSubAreasAsString(bool verbose = false)
@@ -146,12 +147,66 @@ public class Area
         return thisScore.score > bestBelow.score ? thisScore : bestBelow;
     }
 
+    /// <summary>
+    /// Tries to add objects from a json which contains a worldobject array formatted properly, uses semantics to determine if too similar to add
+    /// </summary>
+    public void TryAddObjects(string jsonString)
+    {
+        try
+        {
+            List<WorldObject>? objects = JsonSerializer.Deserialize<WorldObject[]>(jsonString)?.ToList();
+            if (objects == null)
+            {
+                throw new ArgumentException($"Bad json passed into TryAddObjects to area, {jsonString}");
+            }
+            else
+            {
+                TryAddObjects(objects);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to try and add objects from json with exception {ex}");
+        }
+    }
 
-    public void AddObjects(List<WorldObject> worldObjects)
+    /// <summary>
+    /// Uses semantics to determine if two objects are too similar and are duplicates before adding
+    /// </summary>
+    public void TryAddObjects(List<WorldObject> objects)
+    {
+        using var embedder = new Embedder("minilm-l6-v2");
+        foreach (var o in objects)
+        {
+            TryAddObject(o, embedder);
+        }
+    }
+
+    /// <summary>
+    /// Uses semantics to determine if two objects are too similar and are duplicates before adding
+    /// </summary>
+    public void TryAddObject(WorldObject worldObject)
+    {
+        using var embedder = new Embedder("minilm-l6-v2");
+        TryAddObject(worldObject);
+    }
+    private void TryAddObject(WorldObject worldObject, Embedder embedder)
+    {
+        foreach (var o in Objects)
+        {
+            if (embedder.Similarity(o.Name, worldObject.Name) > WorldGraph.ObjectDuplicateStrictness)
+            {
+                return;
+            }
+        }
+        AddObjectUnsafe(worldObject);
+    }
+
+    internal void AddObjectsUnsafe(List<WorldObject> worldObjects)
     {
         Objects.AddRange(worldObjects);
     }
-    public void AddObject(WorldObject worldObject)
+    internal void AddObjectUnsafe(WorldObject worldObject)
     {
         Objects.Add(worldObject);
     }
