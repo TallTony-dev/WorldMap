@@ -147,6 +147,11 @@ public class Area
         return thisScore.score > bestBelow.score ? thisScore : bestBelow;
     }
 
+    public void ConglomerateImage(string jpegPath)
+    {
+        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(jpegPath).Wait());
+    }
+
     /// <summary>
     /// Tries to add objects from a json which contains a worldobject array formatted properly, uses semantics to determine if too similar to add
     /// </summary>
