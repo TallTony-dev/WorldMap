@@ -26,11 +26,11 @@ internal class Program
         Console.WriteLine(json);
 
 
-        //string objectPrompt = "Tissues";
-        //while ((objectPrompt = Console.ReadLine()!) != "exit")
-        //{
-        //    Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt)}");
-        //}
+        string objectPrompt = "Tissues";
+        while ((objectPrompt = Console.ReadLine()!) != "exit")
+        {
+            Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt).obj.ToString(true)}");
+        }
 
 
         WorldGraph rerun = new WorldGraph(json);

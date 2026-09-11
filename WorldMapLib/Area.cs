@@ -261,16 +261,16 @@ public class Area
             arr[i] = (Objects[i], embedder.Similarity(name, Objects[i].Name));
         }
 
-        (WorldObject area, float score, string areaPath)[] arr2 = new (WorldObject area, float score, string areaPath)[(SubAreas.Count)];
+        (WorldObject obj, float score, string areaPath)[] arr2 = new (WorldObject obj, float score, string areaPath)[(SubAreas.Count)];
 
-        for (int i = 0; i < arr.Length; i++)
+        for (int i = 0; i < arr2.Length; i++)
         {
             arr2[i] = SubAreas[i].SearchForObjectSemantic(name, embedder);
         }
 
         var b = arr.MaxBy(t => t.score);
         (WorldObject obj, float score, string areaPath) bestIn = (b.obj, b.score, AreaPath);
-        var bestUnder = arr2.MaxBy(t => t.score);
+        var bestUnder = arr2.Length > 0 ? arr2.MaxBy(t => t.score) : bestIn;
 
         return bestIn.score > bestUnder.score ? bestIn : bestUnder;
     }
