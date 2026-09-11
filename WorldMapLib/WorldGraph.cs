@@ -8,7 +8,7 @@ public class WorldGraph
 {
     private Area _baseArea;
 
-    internal static float ObjectDuplicateStrictness = 0.8f;
+    internal static float ObjectDuplicateStrictness = 0.5f;
 
     public WorldGraph()
     {

@@ -252,12 +252,12 @@ public class Area
     /// <summary>
     /// Searches for an object in this area and any subareas based off semantics
     /// </summary>
-    public (WorldObject obj, float score, string areaPath) SearchForObjectSemantic(string name)
+    public (WorldObject obj, float score, string areaPath)? SearchForObjectSemantic(string name)
     {
         using var embedder = new Embedder("minilm-l6-v2");
         return SearchForObjectSemantic(name, embedder);
     }
-    private (WorldObject obj, float score, string areaPath) SearchForObjectSemantic(string name, Embedder embedder)
+    private (WorldObject obj, float score, string areaPath)? SearchForObjectSemantic(string name, Embedder embedder)
     {
         (WorldObject obj, float score)[] arr = new (WorldObject obj, float score)[(Objects.Count)];
 
@@ -266,17 +266,23 @@ public class Area
             arr[i] = (Objects[i], embedder.Similarity(name, Objects[i].Name));
         }
 
-        (WorldObject obj, float score, string areaPath)[] arr2 = new (WorldObject obj, float score, string areaPath)[(SubAreas.Count)];
+        (WorldObject obj, float score, string areaPath)?[] arr2 = new (WorldObject obj, float score, string areaPath)?[(SubAreas.Count)];
 
         for (int i = 0; i < arr2.Length; i++)
         {
             arr2[i] = SubAreas[i].SearchForObjectSemantic(name, embedder);
         }
+        if (arr.Length > 0) {
+            var b = arr.MaxBy(t => t.score);
+            (WorldObject obj, float score, string areaPath) bestIn = (b.obj, b.score, AreaPath);
+            var bestUnder = arr2.Length > 0 ? arr2.MaxBy(t => t?.score) : bestIn;
+            return bestIn.score > bestUnder?.score ? bestIn : bestUnder;
+        }
+        else
+        {
+            return arr2.Length > 0 ? arr2.MaxBy(t => t?.score) : null;
+        }
+        
 
-        var b = arr.MaxBy(t => t.score);
-        (WorldObject obj, float score, string areaPath) bestIn = (b.obj, b.score, AreaPath);
-        var bestUnder = arr2.Length > 0 ? arr2.MaxBy(t => t.score) : bestIn;
-
-        return bestIn.score > bestUnder.score ? bestIn : bestUnder;
     }
 }

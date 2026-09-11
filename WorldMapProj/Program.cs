@@ -29,7 +29,7 @@ internal class Program
         string objectPrompt = "Tissues";
         while ((objectPrompt = Console.ReadLine()!) != "exit")
         {
-            Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt).obj.ToString(true)}");
+            Console.WriteLine($"Object found: {graph.GetBaseArea().SearchForObjectSemantic(objectPrompt)?.obj.ToString(true)}");
         }
 
 
@@ -66,6 +66,42 @@ internal class Program
               },
               {
                 "Name": "Brown box of cables",
+                "Description": "contains assorted cables",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 1
+              }
+            ]
+            """
+            );
+            rerun.GetBaseArea().TryAddObjects(
+            """
+                  [
+              {
+                "Name": "grey cat",
+                "Description": "mreooww",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 2
+              },
+              {
+                "Name": "trash bin",
+                "Description": "full of trash",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 0
+              },
+              {
+                "Name": "Phone",
+                "Description": "Leather case on small phone",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 2
+              },
+              {
+                "Name": "Tissues",
+                "Description": "sunflower pattern on the outside",
+                "ApproxCoordinates": {},
+                "ObjectVolatility": 1
+              },
+              {
+                "Name": "bunch of cables",
                 "Description": "contains assorted cables",
                 "ApproxCoordinates": {},
                 "ObjectVolatility": 1
