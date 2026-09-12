@@ -14,16 +14,16 @@ public class WorldObject
     /// </summary>
     public string Name { get; private set; }
     public string Description { get; private set; } = "";
-    public GpsCoord ApproxCoordinates { get; private set; } //might not need or want, could be unneeded context
-    public Volatility ObjectVolatility { get; private set; }
+    public GpsCoord ApproxGpsCoordinates { get; private set; } = new(); //might not need or want, could be unneeded context
+    public Volatility MovementLikelihood { get; private set; }
 
     [JsonConstructor]
-    public WorldObject(string name, string description, Volatility objectVolatility, GpsCoord approxCoordinates)
+    public WorldObject(string name, string description, Volatility movementLikelihood, GpsCoord approxGpsCoordinates)
     {
         Name = name;
         Description = description;
-        ApproxCoordinates = approxCoordinates;
-        ObjectVolatility = objectVolatility;
+        ApproxGpsCoordinates = approxGpsCoordinates;
+        MovementLikelihood = movementLikelihood;
     }
 
     public string ToString(bool withDescription = false)
@@ -44,4 +44,5 @@ public class WorldObject
 /// Describes how likely an item is to change place or be destroyed,
 /// For example a burger or paper coffee cup is highly volatile, a cutting board or coffee machine is medium, a fridge is low
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Volatility { Low, Medium, High }

@@ -1,60 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.AI;
-using ElBruno.LocalLLMs;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.Ollama;
 
 namespace WorldMapLib
 {
     public static class ImageProcessing
     {
 
-        private const string ImageDescriptionPrompt = "Describe the objects visible in this image and pass a json formatted array";
+        private const string ImageDescriptionPrompt = @"Describe the objects visible in this image and output a JSON array describing them. 
+        Object volatility (movementLikelihood) is how likely the object is to move or be destroyed. (e.g., 'Low', 'Medium', 'High').
 
-        private static async Task<IChatClient> GetModel()
+        You MUST adhere exactly to this JSON schema:
+        [
         {
-            LocalLLMsOptions options = new()
-            {
-                Model = KnownModels.Gemma4E2BIT
-            };
-            return await LocalChatClient.CreateAsync(options);
+            ""Name"": ""string"",
+            ""Description"": ""string"",
+
+            ""MovementLikelihood"": ""Low/Medium/High"" 
+        }
+        ]
+
+        Return strictly valid JSON only, without markdown formatting or extra text.
+        Do NOT include data about location in your responses.";
+
+        private static IChatCompletionService GetModel()
+        {
+            // string modelPath = Path.Combine(AppContext.BaseDirectory, "models", "gemma-4-e2b-it-onnx");
+
+            string modelId = "gemma4:e2b";
+            string endpoint = "http://localhost:11434";
+
+            var builder = Kernel.CreateBuilder();
+            builder.AddOllamaChatCompletion(
+                modelId: modelId,
+                endpoint: new Uri(endpoint)
+            );
+
+            Kernel kernel = builder.Build();
+
+            return kernel.GetRequiredService<IChatCompletionService>();
+
+            // LocalLLMsOptions options = new()
+            // {
+            //     Model = KnownModels.Gemma4E2BIT with { ModelType = OnnxModelType.VisionGenAI },
+            //     ModelPath = modelPath,
+            //     EnsureModelDownloaded = false,
+            //     // EnsureModelDownloaded = true
+            // };
+            
+            // return await LocalVisionChatClient.CreateAsync(options);
         }
 
-        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(byte[] jpegBytes)
+        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(byte[] data, string imageType)
         {
-            using var chatClient = await GetModel();
+            var chatClient = GetModel();
+            var schema = AIJsonUtilities.CreateJsonSchema(
+                type: typeof(List<WorldObject>),
+                description: "A structured list of world objects."
+            );
+            //     var jsonSchemaOptions = new ChatResponseFormatJson(
+            //        
+            //    );
+            // var options = new ChatOptions
+            // {
+            //     // ResponseFormat = jsonSchemaOptions,
+            //     // StopSequences = new List<string> { "<turn|>", "<|turn>" },
+            //     Temperature = 0.3f,
+                
+                
+            // };
 
-            var jsonSchemaOptions = new ChatResponseFormatJson(
-               AIJsonUtilities.CreateJsonSchema(
-                   type: typeof(List<WorldObject>),
-                   description: "A structured list of world objects."
-               )
-           );
-            var options = new ChatOptions
+            // var messages = new List<ChatMessage>
+            // {
+            //     new ChatMessage(ChatRole.User,
+            //     [
+            //         new TextContent($"{ImageDescriptionPrompt}"),
+            //         // new DataContent(data, $"image/{imageType}")
+            //     ])
+            // };
+
+            var history = new ChatHistory();
+
+            var multiPartMessage = new ChatMessageContentItemCollection
             {
-                ResponseFormat = jsonSchemaOptions
+                new Microsoft.SemanticKernel.TextContent(ImageDescriptionPrompt),
+                new ImageContent(data, $"image/{imageType}")
             };
 
-            var messages = new List<ChatMessage>
-            {
-                new ChatMessage (ChatRole.System, [
-                    new TextContent(ImageDescriptionPrompt),
-                    new DataContent(jpegBytes, "image/jpeg")
-                ])
+            OllamaPromptExecutionSettings settings = new() {
+                ExtensionData = new Dictionary<string, object>
+                {
+                    { "format", schema }
+                },
             };
 
-            ChatResponse response = await chatClient.GetResponseAsync(messages, options);
+            history.AddMessage(AuthorRole.User, multiPartMessage);
 
-            Console.WriteLine($"Objects found in image: {response}");
+            Console.WriteLine($"Schema: {schema}");
+            Console.WriteLine($"Getting objects from image");
+            
+            var responseStream = chatClient.GetStreamingChatMessageContentsAsync(history, settings);
+            var responseText = new StringBuilder();
 
-            return JsonSerializer.Deserialize<List<WorldObject>>(response.Text) ?? new List<WorldObject>();
+            await foreach (var chunk in responseStream)
+            {
+                Console.Write(chunk);
+                responseText.Append(chunk);
+            }
+
+            string text = responseText.ToString();
+            
+            var objects = JsonSerializer.Deserialize<WorldObject[]>(text)?.ToList() ?? new List<WorldObject>();
+            //Console.WriteLine($"Objects found in image: {string.Join(',', objects.Select(t => t.ToString(true)))}");
+
+            return objects;
         }
 
-        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(string jpegImagePath)
+        internal static async Task<List<WorldObject>> GetObjectsFromImageAsync(string imagePath, string imageType)
         {
-            byte[] jpegBytes = await File.ReadAllBytesAsync(jpegImagePath);
-            return await GetObjectsFromImageAsync (jpegBytes);
+            byte[] data = await File.ReadAllBytesAsync(imagePath);
+            return await GetObjectsFromImageAsync (data, imageType);
         }
 
 

@@ -146,13 +146,13 @@ public class Area
         return thisScore.score > bestBelow.score ? thisScore : bestBelow;
     }
 
-    public void ConglomerateImage(string jpegPath)
+    public void ConglomerateImage(string path, string imageType)
     {
-        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(jpegPath).GetAwaiter().GetResult());
+        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
     }
-    public void ConglomerateImage(byte[] jpegData)
+    public void ConglomerateImage(byte[] data, string imageType)
     {
-        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(jpegData).GetAwaiter().GetResult());
+        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
     }
 
     /// <summary>
@@ -200,6 +200,10 @@ public class Area
     }
     private void TryAddObject(WorldObject worldObject, Embedder embedder)
     {
+        if (string.IsNullOrEmpty(worldObject.Name))
+        {
+            throw new ArgumentException($"Worldobject {worldObject.ToString(true)} has null name");
+        }
         foreach (var o in Objects)
         {
             if (embedder.Similarity(o.Name, worldObject.Name) > WorldGraph.ObjectDuplicateStrictness)
