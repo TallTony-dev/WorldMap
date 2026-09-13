@@ -100,14 +100,15 @@ namespace WorldMapLib
         }
 
 
-        internal static async void AddApplicableAreasFromImageAsync(byte[] data, string imageType, Area currentArea) 
+        internal static async Task AddApplicableAreasFromImageAsync(byte[] data, string imageType, Area currentArea) 
         { 
             throw new NotImplementedException();
         }
 
 
-        internal static async void CleanupObjectsInAreaAsync(Area targetArea) 
+        internal static async Task CleanupObjectsInAreaAsync(Area targetArea) 
         {
+            //string objects = targetArea.GetObjectsAsString();
             throw new NotImplementedException();
         }
 

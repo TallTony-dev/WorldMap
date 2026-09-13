@@ -162,13 +162,20 @@ public class Area
         return thisScore.score > bestBelow.score ? thisScore : bestBelow;
     }
 
+    private void RemoveDuplicateObjects()
+    {
+        LLMProcessing.CleanupObjectsInAreaAsync(this).GetAwaiter().GetResult();
+    }
+
     public void ConglomerateImage(string path, string imageType)
     {
         TryAddObjects(LLMProcessing.GetObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
+        RemoveDuplicateObjects();
     }
     public void ConglomerateImage(byte[] data, string imageType)
     {
         TryAddObjects(LLMProcessing.GetObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
+        RemoveDuplicateObjects();
     }
 
     /// <summary>
