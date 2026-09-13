@@ -7,26 +7,52 @@ namespace WorldMapLib;
 public class WorldGraph
 {
     private Area _baseArea;
+    private string _saveName;
+
+    private string SavePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        , "WorldGraphData", $"{_saveName}/{_saveName}.json");
 
     internal static float ObjectDuplicateStrictness = 0.5f;
 
-    public WorldGraph()
+
+    /// <summary>
+    /// Uses an existing save with the name if one exists, otherwise creates a new save.
+    /// </summary>
+    /// <param name="saveName">The name of the save, store in LocalApplicationData/WorldGraphData</param>
+    public WorldGraph(string saveName)
     {
-        _baseArea = new Area("Earth", "Base area object, should contain all subareas", new(0, 0));
-    }
-    public WorldGraph(string jsonString)
-    {
-        _baseArea = JsonSerializer.Deserialize<Area>(jsonString)!;
+        _saveName = saveName;
+        string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        , "WorldGraphData");
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+        if (!Directory.Exists(Path.Combine(folderPath, saveName)))
+        {
+            Directory.CreateDirectory(Path.Combine(folderPath, saveName));
+        }
+
+        if (File.Exists(SavePath))
+        {
+            _baseArea = JsonSerializer.Deserialize<Area>(File.ReadAllText(SavePath))!;
+        }
+        else
+        {
+            _baseArea = new Area("Earth", "Base area object, should contain all subareas", new(0, 0));
+        }
     }
 
     /// <summary>
-    /// Overwrites the file at <paramref name="filePath"/> to contain json rep of the world graph.
+    /// Saves data to LocalApplicationData/WorldGraphData/{saveName passed in constructor}
     /// </summary>
-    public void SaveToFile(string filePath)
+    public void SaveToFile()
     {
-        File.Delete(filePath);
-        var stream = File.OpenWrite(filePath);
+        File.Create(SavePath + ".new");
+        using var stream = File.OpenWrite(SavePath + ".new");
         JsonSerializer.Serialize(stream, _baseArea);
+        stream.Close();
+        File.Move(SavePath + ".new", SavePath, true);
     }
     
     public string SerializeToJsonString(bool pretty = false)

@@ -16,12 +16,10 @@ internal class Program
     // static int framesSinceTaken = 0;
     // static int frameCount = 0;
 
-    static WorldGraph graph;
+    static WorldGraph graph = new("test1");
 
     public static void Main()
     {
-        graph = new();
-
         // using var manager = new CameraManager();
         // using var camera = manager.GetDevice();
         // camera.OnFrame += frameEventHandler;
@@ -35,8 +33,12 @@ internal class Program
         // }
 
         // camera.StopCapture();
-        graph.GetBaseArea().ConglomerateImage("image copy.png", "png");
+        for (int i = 0; i < 10; i++)
+        {
+            graph.GetBaseArea().ConglomerateImage("image copy.png", "png");
+        }
 
+        Console.WriteLine(graph.GetBaseArea().GetObjectsAsString());
         
     }
 

@@ -11,7 +11,7 @@ public class Area
     public string Name { get; private set; } = "";
     public string Description { get; private set; } = "";
     /// <summary>
-    /// Does not have to be exact, approximate coordinates of the area.
+    /// Does not have to be exact, just approximate coordinates of the area.
     /// </summary>
     public GpsCoord Coordinates { get; private set; }
 
@@ -38,25 +38,32 @@ public class Area
     [JsonInclude]
     private List<Area> SubAreas = new();
 
+    /// <summary>
+    /// Areas adjacent to this area
+    /// </summary>
+    [JsonInclude]
+    private List<Area> AdjacentAreas = new();
+
     private Area? _parent;
 
 
     [JsonConstructor]
-    public Area(string name, string description, GpsCoord coordinates, List<WorldObject> objects, List<Area> subAreas)
+    public Area(string name, string description, GpsCoord? coordinates, List<WorldObject>? objects, List<Area>? subAreas, List<Area>? adjacentAreas)
     {
         Name = name;
         Description = description;
-        Coordinates = coordinates;
-        SubAreas = subAreas;
+        Coordinates = coordinates ?? new GpsCoord();
+        SubAreas = subAreas ?? new();
+        AdjacentAreas = adjacentAreas ?? new();
         foreach (var area in SubAreas)
         {
             area._parent = this;
         }
-        Objects = objects;
+        Objects = objects ?? new();
     }
 
     public Area(string name, string description, GpsCoord approxCoords, List<WorldObject> objects) :
-        this(name, description, approxCoords, objects, new()) { }
+        this(name, description, approxCoords, objects, new(), new()) { }
     public Area(string name, string description, GpsCoord approxCoords) :
         this(name, description, approxCoords, new()) { }
 
@@ -73,8 +80,16 @@ public class Area
         }
     }
 
+    public void MakeNewAdjacentArea(string name, string description, GpsCoord approxCoords, List<WorldObject> Objects)
+    {
+        AdjacentAreas.Add(_parent!.AddSubArea(name, description, approxCoords, Objects));
+    }
+    public void RemoveAreaAdjacent(Area area)
+    {
+        AdjacentAreas.Remove(area);
+    }
 
-    public void AddSubArea(string name, string description, GpsCoord approxCoords, List<WorldObject> Objects)
+    public Area AddSubArea(string name, string description, GpsCoord approxCoords, List<WorldObject> Objects)
     {
         if (SubAreas.Any(t => t.Name == name))
         {
@@ -82,10 +97,11 @@ public class Area
         }
         Area a = new Area(name, description, approxCoords, Objects) { _parent = this };
         SubAreas.Add(a);
+        return a;
     }
-    public void AddSubArea(string name, string description, GpsCoord approxCoords)
+    public Area AddSubArea(string name, string description, GpsCoord approxCoords)
     {
-        AddSubArea(name, description, approxCoords, new());
+        return AddSubArea(name, description, approxCoords, new());
     }
 
     internal string GetSubAreasAsString(bool verbose = false)
@@ -148,11 +164,11 @@ public class Area
 
     public void ConglomerateImage(string path, string imageType)
     {
-        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
+        TryAddObjects(LLMProcessing.GetObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
     }
     public void ConglomerateImage(byte[] data, string imageType)
     {
-        TryAddObjects(ImageProcessing.GetObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
+        TryAddObjects(LLMProcessing.GetObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
     }
 
     /// <summary>
@@ -223,9 +239,9 @@ public class Area
         Objects.Add(worldObject);
     }
 
-    internal string GetObjectsAsString(bool verbose = false)
+    public string GetObjectsAsString(bool verbose = false)
     {
-        return string.Join(",", Objects.Select(t => t.ToString(verbose)));
+        return string.Join(",", Objects.Select(t => t.ToString(verbose) + " "));
     }
     internal WorldObject GetObject(string name)
     {

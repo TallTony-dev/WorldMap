@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.9.12120.119 stable
+VisualStudioVersion = 18.9.12120.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceReasoningTesting", "WorldMapProj\SpaceReasoningTesting.csproj", "{CC581FBF-9DB1-4415-BB6E-6DBD05AA3025}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Python Tool APIs", "Python Tool APIs", "{DC01330D-858F-4079-BB34-F5028205E9F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovementControllerLib", "MovementControllerLib\MovementControllerLib.csproj", "{A0CF7FBB-96CD-4017-9774-E87C3E530AC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldMapServer", "WorldMapServer\WorldMapServer.csproj", "{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,18 @@ Global
 		{A0CF7FBB-96CD-4017-9774-E87C3E530AC7}.Release|x64.Build.0 = Release|Any CPU
 		{A0CF7FBB-96CD-4017-9774-E87C3E530AC7}.Release|x86.ActiveCfg = Release|Any CPU
 		{A0CF7FBB-96CD-4017-9774-E87C3E530AC7}.Release|x86.Build.0 = Release|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Release|x64.Build.0 = Release|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
