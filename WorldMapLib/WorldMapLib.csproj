@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovementControllerLib\DriverLib.csproj" />
+    <ProjectReference Include="..\DriverLib\DriverLib.csproj" />
   </ItemGroup>
 
   <Import Project="..\LLMLib\LLMLib.projitems" Label="Shared" />
