@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldMapLib", "WorldMapLib\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Python Tool APIs", "Python Tool APIs", "{DC01330D-858F-4079-BB34-F5028205E9F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovementControllerLib", "MovementControllerLib\MovementControllerLib.csproj", "{A0CF7FBB-96CD-4017-9774-E87C3E530AC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverLib", "MovementControllerLib\DriverLib.csproj", "{A0CF7FBB-96CD-4017-9774-E87C3E530AC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldMapServer", "WorldMapServer\WorldMapServer.csproj", "{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LLMLib", "LLMLib\LLMLib.shproj", "{4C5E8F79-7129-4899-92AE-F64E4FAF6C56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,5 +79,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91948485-A12A-4994-BCC0-1C3E53876680}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		LLMLib\LLMLib.projitems*{198ffbe1-8123-4bdb-a328-13395a3bfe21}*SharedItemsImports = 5
+		LLMLib\LLMLib.projitems*{4c5e8f79-7129-4899-92ae-f64e4faf6c56}*SharedItemsImports = 13
+		LLMLib\LLMLib.projitems*{e17094c4-3e6f-4536-8e71-93aa9c11f3de}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

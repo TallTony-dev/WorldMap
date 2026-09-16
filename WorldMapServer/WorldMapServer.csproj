@@ -12,7 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../WorldMapLib/WorldMapLib.csproj" />
+    <ProjectReference Include="..\MovementControllerLib\DriverLib.csproj" />
+    <ProjectReference Include="..\WorldMapLib\WorldMapLib.csproj" />
   </ItemGroup>
+
+  <Import Project="..\LLMLib\LLMLib.projitems" Label="Shared" />
 
 </Project>

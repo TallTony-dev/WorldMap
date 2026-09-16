@@ -6,13 +6,15 @@ namespace WorldMapLib;
 
 public class WorldGraph
 {
+    public Area CurrentArea { get; set; }
+
     private Area _baseArea;
     private string _saveName;
 
     private string SavePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
         , "WorldGraphData", $"{_saveName}/{_saveName}.json");
 
-    internal static float ObjectDuplicateStrictness = 0.5f;
+    internal const float ObjectDuplicateStrictness = 0.5f;
 
 
     /// <summary>
@@ -41,6 +43,7 @@ public class WorldGraph
         {
             _baseArea = new Area("Earth", "Base area object, should contain all subareas", new(0, 0));
         }
+        CurrentArea = _baseArea;
     }
 
     /// <summary>

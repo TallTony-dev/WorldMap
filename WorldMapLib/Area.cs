@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Kjarni;
-
+using LLMLib;
 
 namespace WorldMapLib;
 
@@ -112,7 +112,7 @@ public class Area
     {
         return SubAreas.First(t => t.Name == name);
     }
-    internal Area? GetParent()
+    public Area? GetParent()
     {
         return _parent;
     }
@@ -164,17 +164,17 @@ public class Area
 
     private void RemoveDuplicateObjects()
     {
-        LLMProcessing.CleanupObjectsInAreaAsync(this).GetAwaiter().GetResult();
+        LLMProcessing.CleanupObjectsInAreaAsync(this).Wait();
     }
 
     public void ConglomerateImage(string path, string imageType)
     {
-        TryAddObjects(LLMProcessing.GetObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
+        TryAddObjects(LLMProcessing.GetWorldObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
         RemoveDuplicateObjects();
     }
     public void ConglomerateImage(byte[] data, string imageType)
     {
-        TryAddObjects(LLMProcessing.GetObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
+        TryAddObjects(LLMProcessing.GetWorldObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
         RemoveDuplicateObjects();
     }
 
