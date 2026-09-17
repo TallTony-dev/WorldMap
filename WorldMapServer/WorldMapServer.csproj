@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovementControllerLib\DriverLib.csproj" />
+    <ProjectReference Include="..\DriverLib\DriverLib.csproj" />
     <ProjectReference Include="..\WorldMapLib\WorldMapLib.csproj" />
   </ItemGroup>
 
