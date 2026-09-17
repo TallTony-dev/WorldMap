@@ -4,7 +4,6 @@ using Microsoft.SemanticKernel.Connectors.Ollama;
 using System.Text;
 using System.Text.Json;
 using WorldMapLib;
-using DriverLib;
 
 namespace LLMLib
 {
@@ -19,7 +18,6 @@ namespace LLMLib
         {
             ""Name"": ""string"",
             ""Description"": ""string"",
-
             ""MovementLikelihood"": ""Low/Medium/High"" 
         }
         ]
@@ -33,7 +31,7 @@ namespace LLMLib
 
         private static string NewAreaPrompt() => $@"";
 
-        private static IChatCompletionService GetLightImageModel()
+        private static IChatCompletionService GetLightImageModel(bool addTools = true)
         {
             Console.WriteLine("Getting model for image recognition");
             string modelId = "gemma4:e2b";
@@ -47,6 +45,11 @@ namespace LLMLib
 
             Kernel kernel = builder.Build();
 
+            if (addTools)
+            {
+                kernel.CreatePluginFromType<WorldGraphTools>("World graph tools");
+            }
+
             return kernel.GetRequiredService<IChatCompletionService>();
         }
 
@@ -55,7 +58,7 @@ namespace LLMLib
             Console.WriteLine("Asking model a prompt");
             var history = new ChatHistory();
 
-            var multiPartMessage = new ChatMessageContentItemCollection { new Microsoft.SemanticKernel.TextContent(prompt) };
+            var multiPartMessage = new ChatMessageContentItemCollection { new TextContent(prompt) };
             if (images != null)
             {
                 foreach (var image in images)
@@ -101,17 +104,7 @@ namespace LLMLib
         }
 
 
-        public static async Task AddApplicableAreasFromImageAsync(Image[] images, Area currentArea)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        internal static async Task CleanupObjectsInAreaAsync(Area targetArea) 
-        {
-            //string objects = targetArea.GetObjectsAsString();
-            throw new NotImplementedException();
-        }
+        
 
     }
 }

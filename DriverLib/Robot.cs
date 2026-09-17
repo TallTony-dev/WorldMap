@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using static DriverLib.Direction;
+using WorldMapLib;
 
 namespace DriverLib
 {
@@ -11,10 +12,12 @@ namespace DriverLib
         IMovement _movementDriver;
         ICamera _camera;
         IDeviceTransport _deviceTransport;
+        WorldGraph _worldGraph;
         
-        public Robot(string targetIp)
+        public Robot(string targetIp, string graphSaveName)
         {
             _deviceTransport = new HttpDevice(targetIp);
+            _worldGraph = new WorldGraph(graphSaveName);
 
             _movementDriver = new Movement(_deviceTransport);
             _camera = new Camera(_deviceTransport);

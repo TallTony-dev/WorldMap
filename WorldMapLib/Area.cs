@@ -164,7 +164,7 @@ public class Area
 
     private void RemoveDuplicateObjects()
     {
-        LLMProcessing.CleanupObjectsInAreaAsync(this).Wait();
+        throw new NotImplementedException();
     }
 
     public void ConglomerateImage(string path, string imageType)

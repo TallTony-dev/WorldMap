@@ -1,4 +1,3 @@
-
 using System.Text.Json;
 
 namespace WorldMapLib;
@@ -91,4 +90,5 @@ public class WorldGraph
     {
         return _baseArea.SearchForSubAreaExact(name);
     }
+
 }

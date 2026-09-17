@@ -14,13 +14,12 @@ builder.Logging.AddConsole(consoleLogOptions =>
 });
 
 builder.Services.AddSingleton(new WorldGraph("testing"));
-Console.WriteLine("Enter Ip of robot");
 
-builder.Services.AddSingleton(new Robot(Console.ReadLine()!));
+builder.Services.AddSingleton(new Robot("", "testSave"));
 builder.Services
     .AddMcpServer()
     .WithStdioServerTransport()
-    .WithTools<WorldGraphTools>();
+    .WithTools<NavigationMcpTools>();
 builder.Services.AddHostedService<GraphSurroudingsPeriodicService>();
 
 

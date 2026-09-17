@@ -17,7 +17,7 @@ namespace WorldMapServer
             images[0] = _robot.GetImageFromDirection(new Direction(Direction.EDirection.North)).GetAwaiter().GetResult();
             images[1] = _robot.GetImageFromDirection(new Direction(Direction.EDirection.South)).GetAwaiter().GetResult();
 
-            LLMProcessing.AddApplicableAreasFromImageAsync(images, _worldGraph.CurrentArea).Wait();
+            //WorldGraph.AddApplicableAreasFromImageAsync(images, _worldGraph.CurrentArea).Wait();
         }
 
 
