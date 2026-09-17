@@ -83,6 +83,5 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LLMLib\LLMLib.projitems*{198ffbe1-8123-4bdb-a328-13395a3bfe21}*SharedItemsImports = 5
 		LLMLib\LLMLib.projitems*{4c5e8f79-7129-4899-92ae-f64e4faf6c56}*SharedItemsImports = 13
-		LLMLib\LLMLib.projitems*{e17094c4-3e6f-4536-8e71-93aa9c11f3de}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

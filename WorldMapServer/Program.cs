@@ -12,8 +12,11 @@ builder.Logging.AddConsole(consoleLogOptions =>
 {
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
+
 builder.Services.AddSingleton(new WorldGraph("testing"));
-builder.Services.AddSingleton(new Robot());
+Console.WriteLine("Enter Ip of robot");
+
+builder.Services.AddSingleton(new Robot(Console.ReadLine()!));
 builder.Services
     .AddMcpServer()
     .WithStdioServerTransport()

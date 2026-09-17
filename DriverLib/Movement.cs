@@ -14,5 +14,20 @@ namespace DriverLib
             _transport = transport;
         }
 
+
+        public async Task MoveInDirectionUntilStopped(Direction direction)
+        {
+            await _transport.TransferToDevice(new DeviceCommand("MoveInDirectionUntilStopped", [direction.ToString()]));
+        }
+
+        public async Task StopMovement()
+        {
+            await _transport.TransferToDevice(new DeviceCommand("StopMovement", []));
+        }
+
+        public async Task MoveInDirectionForDuration(Direction direction, float duration)
+        {
+            await _transport.TransferToDevice(new DeviceCommand("MoveInDirectionForDuration", [duration.ToString()]));
+        }
     }
 }

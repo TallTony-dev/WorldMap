@@ -14,11 +14,13 @@ namespace DriverLib
         public Task MoveInDirectionForDuration(Direction direction, float duration);
 
         /// <summary>
-        /// Moves in <paramref name="direction"/> (north being forward) until <paramref name="condition"/> is set to true
+        /// Moves in <paramref name="direction"/> (north being forward) forever until <see cref="StopMovement"/> is called
         /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="condition"></param>
-        public Task MoveInDirectionUntilCondition(Direction direction, ref bool condition);
-        
+        public Task MoveInDirectionUntilStopped(Direction direction);
+
+        /// <summary>
+        /// Stops all active movement 
+        /// </summary>
+        public Task StopMovement();
     }
 }

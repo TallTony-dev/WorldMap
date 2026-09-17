@@ -6,8 +6,15 @@ namespace DriverLib
 {
     internal interface ICamera
     {
-        public Task<Image> GetImage();
+        /// <summary>
+        /// Gets an image from the forward direction
+        /// </summary>
+        public Task<Image> GetImageFromFront();
 
+        /// <summary>
+        /// Gets an image from the direction specified, NOT BY COMPASS, north = forwards, south = backwards
+        /// </summary>
+        public Task<Image> GetImageFromDirection(Direction direction);
     }
 
     public struct Image

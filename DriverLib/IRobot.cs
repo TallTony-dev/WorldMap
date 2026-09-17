@@ -7,7 +7,7 @@ namespace DriverLib
     public interface IRobot //lol like the movie
     {
 
-        public Image GetImageFromDirection(Direction direction);
+        public Task<Image> GetImageFromDirection(Direction direction);
 
         public Task MoveInDirection(Direction movementDir, float durationSecs);
 

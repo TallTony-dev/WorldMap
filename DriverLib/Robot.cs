@@ -22,20 +22,12 @@ namespace DriverLib
 
         public async Task<Image> GetImageFromDirection(Direction direction)
         {
-            var recieved = await _deviceTransport.GetFromDevice(new DeviceCommand("getImageFromDirection", new[] { $"{direction.GetDegrees()}" }));
-            if (recieved.DataType == "image")
-            {
-                return new Image() { ImageType = "jpeg", Data = recieved.Data };
-            }
-            else
-            {
-                throw new BadImageFormatException($"Expected image from device, got {recieved.DataType}");
-            }
+            return await _camera.GetImageFromDirection(direction);
         }
 
         public async Task MoveInDirection(Direction movementDir, float durationSecs)
         {
-            await _deviceTransport.GetFromDevice(new DeviceCommand("moveInDirection", new[] { durationSecs.ToString() }));
+            await _movementDriver.MoveInDirectionForDuration(movementDir, durationSecs);
         }
 
 

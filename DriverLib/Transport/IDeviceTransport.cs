@@ -10,7 +10,7 @@ namespace DriverLib.Transport
 
         public Task TransferToDevice(DeviceCommand command);
 
-        public Task<RecievedDeviceData> GetFromDevice(DeviceCommand getCommand);
+        public Task<RecievedDeviceData?> GetFromDevice(DeviceCommand getCommand);
 
     }
 }

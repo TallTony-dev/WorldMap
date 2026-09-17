@@ -25,8 +25,4 @@ public class WorldGraphTools(WorldGraph worldGraph, IRobot robot)
     {
         _worldGraph.CurrentArea.GetParent()?.AddSubArea(areaName, areaDescription, new GpsCoord());
     }
-
-
-    [McpServerTool, Description("Echoes the message back to the client.")]
-    public static string Echo(string message) => $"hello {message}";
 }

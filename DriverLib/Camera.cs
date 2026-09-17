@@ -13,5 +13,23 @@ namespace DriverLib
         {
             _transport = transport;
         }
+
+        public async Task<Image> GetImageFromFront()
+        {
+            return await GetImageFromDirection(new Direction(Direction.EDirection.North));
+        }
+
+        public async Task<Image> GetImageFromDirection(Direction direction)
+        {
+            var recieved = await _transport.GetFromDevice(new DeviceCommand("GetImageFromDirection", new[] { $"{direction.GetDegrees()}" }));
+            if (recieved?.DataType == "image")
+            {
+                return new Image() { ImageType = "jpeg", Data = recieved?.Data ?? Array.Empty<byte>() };
+            }
+            else
+            {
+                throw new BadImageFormatException($"Expected image from device, got {recieved?.DataType}");
+            }
+        }
     }
 }
