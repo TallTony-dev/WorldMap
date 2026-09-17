@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DriverLib
 {
-    internal class Movement
+    internal class Movement : IMovement
     {
         private IDeviceTransport _transport;
 

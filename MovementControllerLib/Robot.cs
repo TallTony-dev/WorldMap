@@ -2,18 +2,53 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static DriverLib.Direction;
 
 namespace DriverLib
 {
     public class Robot : IRobot
     {
-        IMovement movementDriver;
-        ICamera camera;
-        IDeviceTransport deviceTransport;
+        IMovement _movementDriver;
+        ICamera _camera;
+        IDeviceTransport _deviceTransport;
         
+        public Robot(string targetIp)
+        {
+            _deviceTransport = new HttpDevice(targetIp);
+
+            _movementDriver = new Movement(_deviceTransport);
+            _camera = new Camera(_deviceTransport);
+        }
+
+        public async Task<Image> GetImageFromDirection(Direction direction)
+        {
+            var recieved = await _deviceTransport.GetFromDevice(new DeviceCommand("getImageFromDirection", new[] { $"{direction.GetDegrees()}" }));
+            if (recieved.DataType == "image")
+            {
+                return new Image() { ImageType = "jpeg", Data = recieved.Data };
+            }
+            else
+            {
+                throw new BadImageFormatException($"Expected image from device, got {recieved.DataType}");
+            }
+        }
+
+        public async Task MoveInDirection(Direction movementDir, float durationSecs)
+        {
+            await _deviceTransport.GetFromDevice(new DeviceCommand("moveInDirection", new[] { durationSecs.ToString() }));
+        }
 
 
+        public async Task MoveInDirectionUntilSense(Direction movementDir, Direction objectDirection, int distanceFromObject)
+        {
+            
+        }
 
+
+        public Direction GetDirectionOfFront()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
