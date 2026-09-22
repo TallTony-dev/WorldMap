@@ -15,9 +15,8 @@ namespace DriverLib
         /// Move the robot in a direction until an object is detected in a direction a certain distance away
         /// </summary>
         /// <param name="movementDir">Direction to move</param>
-        /// <param name="objectDirection">Direction to detect object in</param>
         /// <param name="distanceFromObject">The distance from the object for which to stop moving</param>
-        public Task MoveInDirectionUntilSense(Direction movementDir, Direction objectDirection, int distanceFromObject);
+        public Task MoveInDirectionUntilSenseForwards(Direction movementDir, int distanceFromObject);
 
         /// <summary>
         /// Gets the direction that corresponds to the front of the robot via compass

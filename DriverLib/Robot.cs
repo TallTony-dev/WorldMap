@@ -51,7 +51,7 @@ namespace DriverLib
         }
 
 
-        public async Task MoveInDirectionUntilSense(Direction movementDir, Direction objectDirection, int distanceFromObject)
+        public async Task MoveInDirectionUntilSenseForwards(Direction movementDir, int distanceFromObject)
         {
             
         }
