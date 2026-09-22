@@ -35,7 +35,7 @@ internal class Program
         // camera.StopCapture();
         for (int i = 0; i < 10; i++)
         {
-            graph.GetBaseArea().ConglomerateImage("image copy.png", "png");
+            //graph.GetBaseArea().ConglomerateImage("image copy.png", "png");
         }
 
         Console.WriteLine(graph.GetBaseArea().GetObjectsAsString());

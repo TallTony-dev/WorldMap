@@ -29,30 +29,6 @@ namespace LLMLib
         private static string AreaDescriptionPrompt(string currentAreaName) => @$"Internally describe the area that the point from which the given image(s) were taken from with a name and description.
         Evaluate if that area is the name as the area described by the name: {currentAreaName}. And output either true if the area is different, or false if it is semantically equivalent.";
 
-        private static string NewAreaPrompt() => $@"";
-
-        private static IChatCompletionService GetLightImageModel(bool addTools = true)
-        {
-            Console.WriteLine("Getting model for image recognition");
-            string modelId = "gemma4:e2b";
-            string endpoint = "http://localhost:11434";
-
-            var builder = Kernel.CreateBuilder();
-            builder.AddOllamaChatCompletion(
-                modelId: modelId,
-                endpoint: new Uri(endpoint)
-            );
-
-            Kernel kernel = builder.Build();
-
-            if (addTools)
-            {
-                kernel.CreatePluginFromType<WorldGraphTools>("World graph tools");
-            }
-
-            return kernel.GetRequiredService<IChatCompletionService>();
-        }
-
         public static async Task<string> AskPromptToModelAsync(IChatCompletionService model, string prompt, ImageContent[]? images = null, OllamaPromptExecutionSettings? settings = null)
         {
             Console.WriteLine("Asking model a prompt");
@@ -87,24 +63,5 @@ namespace LLMLib
         {
             return await AskPromptToModelAsync(model, prompt, image == null ? null : new[] { image }, settings);
         }
-
-
-        internal static async Task<List<WorldObject>> GetWorldObjectsFromImageAsync(byte[] imageData, string imageType)
-        {
-            string text = await AskPromptToModelAsync(GetLightImageModel(), ImageDescriptionPrompt, new ImageContent(imageData, $"image/{imageType}"),
-                new OllamaPromptExecutionSettings() { ExtensionData = new Dictionary<string, object> { { "response_format", "json_object" } } });
-            
-            return JsonSerializer.Deserialize<WorldObject[]>(text)?.ToList() ?? new List<WorldObject>();
-        }
-
-        internal static async Task<List<WorldObject>> GetWorldObjectsFromImageAsync(string imagePath, string imageType)
-        {
-            byte[] data = await File.ReadAllBytesAsync(imagePath);
-            return await GetWorldObjectsFromImageAsync (data, imageType);
-        }
-
-
-        
-
     }
 }

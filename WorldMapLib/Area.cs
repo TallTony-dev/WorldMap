@@ -20,8 +20,8 @@ public class Area
     {
         get
         {
-            if (_parent == null) { return ""; }
-            return _parent.AreaPath + Name;
+            if (_parent == null) { return "Earth"; }
+            return _parent.AreaPath + "." + Name;
         }
     }
 
@@ -84,6 +84,10 @@ public class Area
     {
         AdjacentAreas.Add(_parent!.AddSubArea(name, description, approxCoords, Objects));
     }
+    public void MakeAreaAdjacent(Area area)
+    {
+        AdjacentAreas.Add(area);
+    }
     public void RemoveAreaAdjacent(Area area)
     {
         AdjacentAreas.Remove(area);
@@ -111,6 +115,17 @@ public class Area
     internal Area GetSubArea(string name)
     {
         return SubAreas.First(t => t.Name == name);
+    }
+    internal Area GetSubArea(ReadOnlySpan<char> name)
+    {
+        foreach (var area in SubAreas)
+        {
+            if (name.SequenceEqual(area.Name))
+            {
+                return area;
+            }
+        }
+        throw new InvalidOperationException($"Subarea {name} doesn't exist");
     }
     public Area? GetParent()
     {
@@ -160,22 +175,6 @@ public class Area
         (Area area, float score) thisScore = (this, embedder.Similarity(name, Name));
 
         return thisScore.score > bestBelow.score ? thisScore : bestBelow;
-    }
-
-    private void RemoveDuplicateObjects()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ConglomerateImage(string path, string imageType)
-    {
-        TryAddObjects(LLMProcessing.GetWorldObjectsFromImageAsync(path, imageType).GetAwaiter().GetResult());
-        RemoveDuplicateObjects();
-    }
-    public void ConglomerateImage(byte[] data, string imageType)
-    {
-        TryAddObjects(LLMProcessing.GetWorldObjectsFromImageAsync(data, imageType).GetAwaiter().GetResult());
-        RemoveDuplicateObjects();
     }
 
     /// <summary>

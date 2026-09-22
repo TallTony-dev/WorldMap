@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using static DriverLib.Direction;
 using WorldMapLib;
+using System.ComponentModel;
+using Microsoft.SemanticKernel;
 
 namespace DriverLib
 {
@@ -13,6 +15,9 @@ namespace DriverLib
         ICamera _camera;
         IDeviceTransport _deviceTransport;
         WorldGraph _worldGraph;
+
+        Kernel lightImageModelMapKernel;
+
         
         public Robot(string targetIp, string graphSaveName)
         {
@@ -21,6 +26,18 @@ namespace DriverLib
 
             _movementDriver = new Movement(_deviceTransport);
             _camera = new Camera(_deviceTransport);
+
+            string modelId = "gemma4:e2b";
+            string endpoint = "http://localhost:11434";
+
+            var builder = Kernel.CreateBuilder();
+            builder.AddOllamaChatCompletion(
+                modelId: modelId,
+                endpoint: new Uri(endpoint)
+            );
+            
+            lightImageModelMapKernel = builder.Build();
+            lightImageModelMapKernel.Plugins.AddFromType<WorldGraphTools>("World graph tools");
         }
 
         public async Task<Image> GetImageFromDirection(Direction direction)
