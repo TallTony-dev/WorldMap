@@ -19,6 +19,11 @@ namespace DriverLib
         public Task MoveInDirectionUntilStopped(Direction direction);
 
         /// <summary>
+        /// Moves in <paramref name="direction"/> (north being forward) until an object is sensed <= <paramref name="distanceFromObject"/> meters away
+        /// </summary>
+        public Task MoveInDirectionUntilSenseForwards(Direction direction, float distanceFromObject);
+
+        /// <summary>
         /// Stops all active movement 
         /// </summary>
         public Task StopMovement();

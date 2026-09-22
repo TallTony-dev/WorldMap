@@ -1,4 +1,5 @@
 ﻿using DriverLib.Transport;
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,5 +30,11 @@ namespace DriverLib
         {
             await _transport.TransferToDevice(new DeviceCommand("MoveInDirectionForDuration", [duration.ToString()]));
         }
+
+        public async Task MoveInDirectionUntilSenseForwards(Direction direction, float distanceFromObject)
+        {
+            await _transport.TransferToDevice(new DeviceCommand("MoveInDirectionForDuration", [distanceFromObject.ToString()]));
+        }
+
     }
 }

@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static DriverLib.Direction;
 using WorldMapLib;
 using System.ComponentModel;
 using Microsoft.SemanticKernel;
+using Microsoft.Agents.AI;
+using Microsoft.Extensions.AI;
+using Microsoft.Agents.AI.Foundry;
 
 namespace DriverLib
 {
@@ -17,7 +19,7 @@ namespace DriverLib
         WorldGraph _worldGraph;
 
         Kernel lightImageModelMapKernel;
-
+        AIAgent navigationAgent;
         
         public Robot(string targetIp, string graphSaveName)
         {
@@ -38,7 +40,16 @@ namespace DriverLib
             
             lightImageModelMapKernel = builder.Build();
             lightImageModelMapKernel.Plugins.AddFromType<WorldGraphTools>("World graph tools");
+
+            navigationAgent = lightImageModelMapKernel.GetRequiredService<IChatClient>().AsAIAgent
+            (
+                name: "Navigator",
+                instructions: @"You are a navigation agent who is controlling a robot. You should reason about your environment and preform the assigned task in an effective manner.",
+                //tools: FoundryAITool.Create
+            );
+
         }
+        
 
         public async Task<Image> GetImageFromDirection(Direction direction)
         {
@@ -51,9 +62,9 @@ namespace DriverLib
         }
 
 
-        public async Task MoveInDirectionUntilSenseForwards(Direction movementDir, int distanceFromObject)
+        public async Task MoveInDirectionUntilSenseForwards(Direction movementDir, float distanceFromObject)
         {
-            
+            await _movementDriver.MoveInDirectionUntilSenseForwards(movementDir, distanceFromObject);
         }
 
 
