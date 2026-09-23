@@ -3,3 +3,4 @@
 .vscode
 .vs
 gemma-4-e2b-it-onnx/
+/packages
