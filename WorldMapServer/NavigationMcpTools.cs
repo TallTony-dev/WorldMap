@@ -10,8 +10,8 @@ public class NavigationMcpTools(IRobot robot)
     private IRobot _robot = robot;
 
 
-    [McpServerTool, Description("t")]
-    public void Thing()
+    [McpServerTool, Description("Reasons about navigating to an area as given by a name by calling an agent framework.")]
+    public void NavigateToAreaByName(string areaName)
     {
         
     }

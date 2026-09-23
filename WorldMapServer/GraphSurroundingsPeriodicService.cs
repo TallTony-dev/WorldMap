@@ -13,9 +13,7 @@ namespace WorldMapServer
 
         private void GraphSurroundings()
         {
-            Image[] images = new Image[2];
-            images[0] = _robot.GetImageFromDirection(new Direction(Direction.EDirection.North)).GetAwaiter().GetResult();
-            images[1] = _robot.GetImageFromDirection(new Direction(Direction.EDirection.South)).GetAwaiter().GetResult();
+            _robot.
 
             //WorldGraph.AddApplicableAreasFromImageAsync(images, _worldGraph.CurrentArea).Wait();
         }
