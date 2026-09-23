@@ -10,8 +10,7 @@ namespace DriverLib.Transport
         private HttpClient _httpClient;
         private string _targetIp;
 
-        private const string CommandSendSubUri = "/commands";
-        private const string GetCommandSubUri = "/get";
+        private const string CommandSubUri = "/command";
 
         public HttpDevice(string targetIp, int readBufferSize = 1024)
         {
@@ -23,12 +22,12 @@ namespace DriverLib.Transport
 
         public async Task TransferToDevice(DeviceCommand command)
         {
-            await _httpClient.PostAsJsonAsync(_targetIp + CommandSendSubUri, command);
+            await _httpClient.PostAsJsonAsync(_targetIp + CommandSubUri, command);
         }
 
         public async Task<RecievedDeviceData?> GetFromDevice(DeviceCommand getCommand)
         {
-            return await _httpClient.GetFromJsonAsync<RecievedDeviceData>(_targetIp + GetCommandSubUri);
+            return await _httpClient.GetFromJsonAsync<RecievedDeviceData>(_targetIp + CommandSubUri);
         }
     }
 }

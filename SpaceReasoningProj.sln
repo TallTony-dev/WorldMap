@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverLib", "DriverLib\Driv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotServer", "WorldMapServer\RobotServer.csproj", "{E17094C4-3E6F-4536-8E71-93AA9C11F3DE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LLMLib", "LLMLib\LLMLib.shproj", "{4C5E8F79-7129-4899-92AE-F64E4FAF6C56}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CA8521A-FD32-4F15-B7DF-42E65BD3A70B}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -105,6 +103,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LLMLib\LLMLib.projitems*{198ffbe1-8123-4bdb-a328-13395a3bfe21}*SharedItemsImports = 5
-		LLMLib\LLMLib.projitems*{4c5e8f79-7129-4899-92ae-f64e4faf6c56}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

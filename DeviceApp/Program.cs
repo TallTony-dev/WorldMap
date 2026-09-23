@@ -1,8 +1,9 @@
+using nanoFramework.WebServer;
 using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Net;
 using System.Device.Wifi;
+using System.Diagnostics;
+using System.Net;
+using System.Threading;
 
 namespace DeviceApp
 {
@@ -11,6 +12,10 @@ namespace DeviceApp
         public static void Main()
         {
             Debug.WriteLine("Hello from nanoFramework!");
+
+            WebServer server = new WebServer(80, HttpProtocol.Http);
+            server.CommandReceived += HttpHandling.OnCommandRecieved;
+            server.Start();
 
             Thread.Sleep(Timeout.Infinite);
 
