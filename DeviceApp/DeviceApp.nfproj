@@ -19,6 +19,11 @@
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
     <Compile Include="HttpHandling.cs" />
+    <Compile Include="IMotorController.cs" />
+    <Compile Include="IMovementDriver.cs" />
+    <Compile Include="L298NDriver.cs" />
+    <Compile Include="MainBot.cs" />
+    <Compile Include="MecanumMovementDriver.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +48,9 @@
     <Reference Include="nanoFramework.WebServer">
       <HintPath>..\packages\nanoFramework.WebServer.FileSystem.1.2.160\lib\nanoFramework.WebServer.dll</HintPath>
     </Reference>
+    <Reference Include="System.Device.Gpio">
+      <HintPath>..\packages\nanoFramework.System.Device.Gpio.1.1.64\lib\System.Device.Gpio.dll</HintPath>
+    </Reference>
     <Reference Include="System.Device.Wifi">
       <HintPath>..\packages\nanoFramework.System.Device.Wifi.1.5.152\lib\System.Device.Wifi.dll</HintPath>
     </Reference>
@@ -65,6 +73,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>
     <ProjectCapabilities>

@@ -15,4 +15,6 @@
     <ProjectReference Include="..\WorldMapLib\WorldMapLib.csproj" />
   </ItemGroup>
 
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
+
 </Project>

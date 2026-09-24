@@ -21,7 +21,7 @@ namespace DriverLib
 
         public async Task<Image> GetImageFromDirection(Direction direction)
         {
-            var recieved = await _transport.GetFromDevice(new DeviceCommand("GetImageFromDirection", new[] { $"{direction.GetDegrees()}" }));
+            var recieved = await _transport.GetFromDevice(new DeviceCommand(DeviceCommandType.GetImageFromDirection, new[] { $"{direction.GetDegrees()}" }));
             if (recieved?.DataType == "image")
             {
                 return new Image() { ImageType = "jpeg", Data = recieved?.Data ?? Array.Empty<byte>() };

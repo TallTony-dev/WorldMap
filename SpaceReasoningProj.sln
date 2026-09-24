@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "DeviceApp", "DeviceApp\DeviceApp.nfproj", "{04B6C633-EDE8-4481-93ED-CF9968A2F068}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "Common\Common.shproj", "{9B7B27F9-88BC-4A17-A424-CBC02507B7FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,5 +105,7 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LLMLib\LLMLib.projitems*{198ffbe1-8123-4bdb-a328-13395a3bfe21}*SharedItemsImports = 5
+		Common\Common.projitems*{9b7b27f9-88bc-4a17-a424-cbc02507b7fc}*SharedItemsImports = 13
+		Common\Common.projitems*{a0cf7fbb-96cd-4017-9774-e87c3e530ac7}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

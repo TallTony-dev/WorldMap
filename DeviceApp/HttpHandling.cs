@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Device.Wifi;
 using nanoFramework.WebServer;
+using nanoFramework.Json;
 
 namespace DeviceApp
 {
@@ -21,7 +22,29 @@ namespace DeviceApp
             
             if (url == "/command")
             {
+                DeviceCommand command = (DeviceCommand)JsonConvert.DeserializeObject(args.Context.Request.InputStream, typeof(DeviceCommand));
 
+                switch(command.CommandName)
+                {
+                    case (DeviceCommandType.GetImageFromDirection):
+
+                        break;
+                    case (DeviceCommandType.StopMovement):
+
+                        break;
+                    case (DeviceCommandType.MoveInDirectionUntilStopped):
+                        MainBot.MovementDriver.MoveInDirection(new Direction(float.Parse(command.Args[0])));
+                        break;
+                    case (DeviceCommandType.MoveInDirectionForDuration):
+
+                        break;
+                    case (DeviceCommandType.MoveInDirectionUntilSense):
+
+                        break;
+                    default:
+                        Debug.WriteLine("Fell out of command recieving switch");
+                        break;
+                }
             }
 
         }
@@ -31,15 +54,4 @@ namespace DeviceApp
 
     }
 
-    internal struct DeviceCommand
-    {
-        public string CommandName { get; set; }
-        public string[] Args { get; set; }
-
-        public DeviceCommand(string commandName, string[] args)
-        {
-            CommandName = commandName;
-            Args = args;
-        }
-    }
 }
