@@ -6,9 +6,9 @@ namespace DeviceApp
 {
     internal interface IMotorController
     {
-        public void DriveForwards();
+        public void DriveForwards(double dutyCycle = 1);
 
-        public void DriveBackwards();
+        public void DriveBackwards(double dutyCycle = 1);
 
         public void StopDriving();
     }

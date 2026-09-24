@@ -8,7 +8,6 @@ namespace DeviceApp
     internal class MecanumMovementDriver : IMovementDriver
     {
         private object _movementLock = new object();
-        private readonly GpioController _gpioController = new GpioController();
 
         //currently using L298N driver
 
@@ -20,10 +19,10 @@ namespace DeviceApp
 
         public MecanumMovementDriver()
         {
-            _frontLeft = new L298NDriver();
-            _frontRight = new L298NDriver();
-            _backLeft = new L298NDriver();
-            _backRight = new L298NDriver();
+            _frontLeft = new L298NDriverChannel();
+            _frontRight = new L298NDriverChannel();
+            _backLeft = new L298NDriverChannel();
+            _backRight = new L298NDriverChannel();
         }
 
 

@@ -9,10 +9,11 @@ namespace DeviceApp
 
         public void StopMovement();
         /// <summary>
-        /// Moves in a direction relative to forwardsd being north
+        /// Moves in a direction relative to forwards being north
         /// </summary>
         /// <param name="dir"></param>
         public void MoveInDirection(Direction dir);
+
         
 
     }
