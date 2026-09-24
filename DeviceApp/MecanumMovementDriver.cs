@@ -19,16 +19,21 @@ namespace DeviceApp
 
         public MecanumMovementDriver()
         {
-            _frontLeft = new L298NDriverChannel();
-            _frontRight = new L298NDriverChannel();
-            _backLeft = new L298NDriverChannel();
-            _backRight = new L298NDriverChannel();
+            _frontLeft = new L298NDriverChannel(13, 12, 14);
+            _frontRight = new L298NDriverChannel(27, 26, 25);
+            _backLeft = new L298NDriverChannel(33, 32, 35);
+            _backRight = new L298NDriverChannel(34, 39, 36);
         }
 
 
         public void StopMovement()
         {
             
+        }
+
+        public void MoveInDirection(Direction direction)
+        {
+
         }
 
     }
