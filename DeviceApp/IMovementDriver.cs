@@ -14,7 +14,7 @@ namespace DeviceApp
         /// <param name="dir"></param>
         public void MoveInDirection(Direction dir);
 
-        
+        public void Rotate(Direction deltaDir);
 
     }
 }
