@@ -28,6 +28,10 @@ public class Direction
         SetDegrees(_degrees + deltaDegreesCW);
     }
 
+    /// <summary>
+    /// Gets degrees CW from north
+    /// </summary>
+    /// <returns></returns>
     public float GetDegrees() 
     {
         return _degrees; 
