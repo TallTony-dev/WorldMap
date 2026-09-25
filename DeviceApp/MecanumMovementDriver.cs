@@ -38,6 +38,16 @@ namespace DeviceApp
             }
         }
 
+        public void MoveInDirectionForDuration(Direction dir, int durationMs)
+        {
+            lock ( _movementLock)
+            {
+                MoveInDirection(dir);
+                Thread.Sleep(durationMs);
+                StopMovement();
+            }
+        }
+
         public void MoveInDirection(Direction direction)
         {
             lock (_movementLock)

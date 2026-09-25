@@ -7,11 +7,11 @@ namespace DriverLib
     public interface IMovement
     {
         /// <summary>
-        /// Moves in <paramref name="direction"/> (north being forward) for <paramref name="duration"/> seconds
+        /// Moves in <paramref name="direction"/> (north being forward) for <paramref name="durationMs"/> seconds
         /// </summary>
         /// <param name="direction">Direction to travel in, not compass aware, just north is forwards, south is backwards</param>
-        /// <param name="duration">Duration to move in secs</param>
-        public Task MoveInDirectionForDuration(Direction direction, float duration);
+        /// <param name="durationMs">Duration to move in ms</param>
+        public Task MoveInDirectionForDuration(Direction direction, int durationMs);
 
         /// <summary>
         /// Moves in <paramref name="direction"/> (north being forward) forever until <see cref="StopMovement"/> is called

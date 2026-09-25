@@ -87,9 +87,9 @@ namespace DriverLib
         }
 
         [Description("Moves the robot forward for a specified duration.")]
-        public async Task MoveInDirection(Direction movementDir, float durationSecs)
+        public async Task MoveInDirection(Direction movementDir, int durationMs)
         {
-            await _movementDriver.MoveInDirectionForDuration(movementDir, durationSecs);
+            await _movementDriver.MoveInDirectionForDuration(movementDir, durationMs);
         }
 
         [Description("Moves the robot forward until an object is sensed a number of meters away.")]

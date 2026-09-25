@@ -30,13 +30,13 @@ namespace DeviceApp
 
                         break;
                     case (DeviceCommandType.StopMovement):
-
+                        MainBot.MovementDriver.StopMovement();
                         break;
                     case (DeviceCommandType.MoveInDirectionUntilStopped):
                         MainBot.MovementDriver.MoveInDirection(new Direction(float.Parse(command.Args[0])));
                         break;
                     case (DeviceCommandType.MoveInDirectionForDuration):
-
+                        MainBot.MovementDriver.MoveInDirectionForDuration(new Direction(float.Parse(command.Args[0])), int.Parse(command.Args[1]));
                         break;
                     case (DeviceCommandType.MoveInDirectionUntilSense):
 
