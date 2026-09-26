@@ -9,7 +9,7 @@ namespace DriverLib
 
         public Task<Image> GetImageFromDirection(Direction direction);
 
-        public Task MoveInDirection(Direction movementDir, float durationSecs);
+        public Task MoveInDirection(Direction movementDir, int durationMs);
 
         /// <summary>
         /// Move the robot in a direction until an object is detected in a direction a certain distance away

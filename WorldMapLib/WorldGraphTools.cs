@@ -63,7 +63,7 @@ public class WorldGraphTools(WorldGraph worldGraph)
             curArea = curArea.GetSubArea(slice);
         }
         //now at the deepest common area (curArea)
-        
+        return "";
         //TODO: assemble path between adjacent and other areas or throw if no connection found, maybe use djikstras or dfs or similar
     }
 }

@@ -13,7 +13,7 @@ namespace WorldMapServer
 
         private void GraphSurroundings()
         {
-            _robot.
+            //_robot.
 
             //WorldGraph.AddApplicableAreasFromImageAsync(images, _worldGraph.CurrentArea).Wait();
         }

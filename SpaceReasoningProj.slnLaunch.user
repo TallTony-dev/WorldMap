@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Testing",
+    "Projects": [
+      {
+        "Path": "WorldMapProj\\SpaceReasoningTesting.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "DeviceApp\\DeviceApp.nfproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

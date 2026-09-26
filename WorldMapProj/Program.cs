@@ -39,6 +39,7 @@ internal class Program
         }
 
         Console.WriteLine(graph.GetBaseArea().GetObjectsAsString());
+
         
     }
 
